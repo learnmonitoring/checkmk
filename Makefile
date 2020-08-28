@@ -82,6 +82,9 @@ LOCK_PATH := .venv.lock
 
 help:
 	@echo "setup			      --> Prepare system for development and building"
+	@echo "centos7-build      	      --> build on centos 7"
+	@echo "centos8-build      	      --> build on centos 8"
+	@echo "fedora32-build      	      --> build on Fedora 32"
 	@echo "make dist                      --> Create source tgz for later building of rpm/deb and livestatus tgz"
 	@echo "make rpm                       --> Create rpm package"
 	@echo "make deb                       --> Create deb package"
@@ -89,8 +92,13 @@ help:
 	@echo "make version                   --> Switch to new version"
 	@echo "make docker-cleanup            --> cleanup existing docker environment"
 
-dbuild:
-	sudo docker build . -f buildscripts/infrastructure/build-nodes/centos-7/Dockerfile
+fedora32-build:
+	sudo docker build . -f buildscripts/infrastructure/build-nodes/fedora-32/Dockerfile
+centos7-build:
+	sudo docker build . -f buildscripts/infrastructure/build-nodes/centos-7/Dockerfilexo
+centos8-build:
+	sudo docker build . -f buildscripts/infrastructure/build-nodes/centos-8/Dockerfile
+#	sudo docker build . -f buildscripts/infrastructure/build-nodes/fedora-32/Dockerfile
 #	sudo docker build . -f Dockerfile.test
 #	sudo docker build - < ./Dockerfile.test
 #	sudo docker build -t cmk01 -f ./Dockerfile.test
