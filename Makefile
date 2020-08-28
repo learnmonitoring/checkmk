@@ -95,7 +95,7 @@ help:
 fedora32-build:
 	sudo docker build . -f buildscripts/infrastructure/build-nodes/fedora-32/Dockerfile
 centos7-build:
-	sudo docker build . -f buildscripts/infrastructure/build-nodes/centos-7/Dockerfilexo
+	sudo docker build . -f buildscripts/infrastructure/build-nodes/centos-7/Dockerfile
 centos8-build:
 	sudo docker build . -f buildscripts/infrastructure/build-nodes/centos-8/Dockerfile
 #	sudo docker build . -f buildscripts/infrastructure/build-nodes/fedora-32/Dockerfile
