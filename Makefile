@@ -87,6 +87,16 @@ help:
 	@echo "make deb                       --> Create deb package"
 	@echo "make cma                       --> Create cma package"
 	@echo "make version                   --> Switch to new version"
+	@echo "make docker-cleanup            --> cleanup existing docker environment"
+
+dbuild:
+	sudo docker build . -f buildscripts/infrastructure/build-nodes/centos-7/Dockerfile
+#	sudo docker build . -f Dockerfile.test
+#	sudo docker build - < ./Dockerfile.test
+#	sudo docker build -t cmk01 -f ./Dockerfile.test
+
+docker-cleanup:
+	sudo docker system prune -a 
 
 rpm:
 	$(MAKE) -C omd rpm

@@ -89,14 +89,24 @@ RUN yum -y makecache \
 # - cmake is needed for e.g. building re2
 # - openssl is needed by Python 3.7+
 # - python is needed by our build / test chain
-ARG NEXUS_ARCHIVES_URL
-ARG NEXUS_USERNAME
-ARG NEXUS_PASSWORD
-ARG DISTRO
-ARG BRANCH_VERSION
+
+#ARG NEXUS_ARCHIVES_URL
+#ARG NEXUS_USERNAME
+#ARG NEXUS_PASSWORD
+#ARG DISTRO
+#ARG BRANCH_VERSION
+
+ARG NEXUS_ARCHIVES_URL=https://cnn.com
+ARG NEXUS_USERNAME=nagios
+ARG NEXUS_PASSWORD=nagios
+ARG DISTRO="CENTOS 7"
+ARG BRANCH_VERSION=1.0
+
 ENV NEXUS_ARCHIVES_URL="$NEXUS_ARCHIVES_URL" NEXUS_USERNAME="$NEXUS_USERNAME" NEXUS_PASSWORD="$NEXUS_PASSWORD" DISTRO="$DISTRO" BRANCH_VERSION="$BRANCH_VERSION"
 
 COPY scripts/* /opt/
+COPY buildscripts/infrastructure/build-nodes/scripts/* /opt/
+
 RUN /opt/install-gnu-toolchain.sh
 RUN /opt/install-cmake.sh
 RUN /opt/install-openssl.sh
@@ -116,5 +126,5 @@ RUN touch /etc/fstab
 RUN groupadd -g 1000 jenkins \
     && useradd -m -u 1001 -g 1000 -s /bin/bash jenkins
 
-ARG VERS_TAG
+ARG VERS_TAG=1.0
 RUN echo $VERS_TAG > /version.txt
