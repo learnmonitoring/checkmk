@@ -6,8 +6,8 @@
 set -e -o pipefail
 
 case "$DISTRO" in
-centos-7 | centos-8)
-    echo "Installing for CentOS 7, 8"
+centos-7 | centos-8 | fedora-* )
+    echo "Installing for CentOS 7, 8 or Fedora "
     curl -sL https://rpm.nodesource.com/setup_12.x | bash -
     yum -y install nodejs
     exit 0
