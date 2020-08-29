@@ -1,11 +1,9 @@
-FROM fedora:fedora32
+FROM fedora:32
 
 SHELL ["/bin/bash", "-c"]
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8 PATH="/opt/bin:${PATH}"
 
-RUN yum -y --enablerepo=PowerTools --allowerasing install \
-    epel-release \
-    && yum -y --enablerepo=PowerTools --allowerasing install \
+RUN dnf -y  --allowerasing install \
     curl \
     enchant \
     gcc \
@@ -23,10 +21,10 @@ RUN yum -y --enablerepo=PowerTools --allowerasing install \
     sudo \
     vim \
     which \
-    && yum clean all
+    && dnf clean all
 
-RUN yum -y makecache \
-    && yum -y --enablerepo=PowerTools install \
+RUN dnf -y makecache \
+    && dnf -y  install \
     bind-utils \
     curl \
     curl-devel \
@@ -81,47 +79,51 @@ RUN yum -y makecache \
     tk-devel \
     wget \
     which \
-    && yum clean all
+    && dnf clean all
 # --nogpgcheck: Workaround for failing installation, not locally reproducable
-RUN yum -y makecache \
-    && yum -y --enablerepo=PowerTools reinstall \
+RUN dnf -y makecache \
+    && dnf -y  reinstall \
     kernel-headers \
     --nogpgcheck \
-    && yum clean all
+    && dnf clean all
 
-# epel release is needed for joe
+# 
 # --nogpgcheck: Workaround for failing installation, not locally reproducable
-RUN yum -y makecache \
-    && yum -y install \
-    epel-release \
-    --nogpgcheck \
-    && yum clean all
+RUN dnf -y makecache \
+    && dnf clean all
 
 # New packages that are not needed for the build toolchain above should be added here.
 # We avoid rebuild of the whole previous steps this way
 # --nogpgcheck: Workaround for failing installation, not locally reproducable
-RUN yum -y makecache \
-    && yum -y --enablerepo=PowerTools install \
+RUN dnf -y makecache \
+    && dnf -y  install \
     chrpath \
     joe \
     iputils \
     vim \
     --nogpgcheck \
-    && yum clean all
+    && dnf clean all
 
 # Install our standard tool chain for building
 # - gnu-toolchain is needed for compiling all the C++ stuff
 # - cmake is needed for e.g. building re2
 # - openssl is needed by Python 3.7+
 # - python is needed by our build / test chain
-ARG NEXUS_ARCHIVES_URL
-ARG NEXUS_USERNAME
-ARG NEXUS_PASSWORD
-ARG DISTRO
-ARG BRANCH_VERSION
+#ARG NEXUS_ARCHIVES_URL
+#ARG NEXUS_USERNAME
+#ARG NEXUS_PASSWORD
+#ARG DISTRO
+#ARG BRANCH_VERSION
+ARG NEXUS_ARCHIVES_URL=https://test.com
+ARG NEXUS_USERNAME=nagios
+ARG NEXUS_PASSWORD=nagios
+ARG DISTRO="fc32"
+ARG BRANCH_VERSION=1.0
+
 ENV NEXUS_ARCHIVES_URL="$NEXUS_ARCHIVES_URL" NEXUS_USERNAME="$NEXUS_USERNAME" NEXUS_PASSWORD="$NEXUS_PASSWORD" DISTRO="$DISTRO" BRANCH_VERSION="$BRANCH_VERSION"
 
 COPY scripts/* /opt/
+COPY buildscripts/infrastructure/build-nodes/scripts/* /opt/
 RUN /opt/install-gnu-toolchain.sh
 RUN /opt/install-cmake.sh
 RUN /opt/install-openssl.sh
