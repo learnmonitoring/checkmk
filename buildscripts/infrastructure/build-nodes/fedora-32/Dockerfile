@@ -124,7 +124,7 @@ ENV NEXUS_ARCHIVES_URL="$NEXUS_ARCHIVES_URL" NEXUS_USERNAME="$NEXUS_USERNAME" NE
 
 COPY scripts/* /opt/
 COPY buildscripts/infrastructure/build-nodes/scripts/* /opt/
-RUN /opt/install-gnu-toolchain.sh
+#RUN /opt/install-gnu-toolchain.sh
 RUN /opt/install-cmake.sh
 RUN /opt/install-openssl.sh
 RUN /opt/install-python2.sh
@@ -140,8 +140,8 @@ RUN touch /etc/fstab
 
 # Ensure all our build containers have the jenkins user (with same uid/gid). The non privileged
 # jobs will be executed as this user in the container
-RUN groupadd -g 1000 jenkins \
-    && useradd -m -u 1001 -g 1000 -s /bin/bash jenkins
+#RUN groupadd -g 1000 jenkins \
+#    && useradd -m -u 1001 -g 1000 -s /bin/bash jenkins
 
 ARG VERS_TAG
 RUN echo $VERS_TAG > /version.txt

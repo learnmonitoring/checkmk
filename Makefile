@@ -93,7 +93,10 @@ help:
 	@echo "make docker-cleanup            --> cleanup existing docker environment"
 
 fedora32-build:
-	sudo docker build . -f buildscripts/infrastructure/build-nodes/fedora-32/Dockerfile
+	sudo docker build -t cre . -f buildscripts/infrastructure/build-nodes/fedora-32/Dockerfile
+fedor32-tail:
+	sudo docker run -it --rm cre  /var/log/yum.log
+# docker run -it centos bash
 centos7-build:
 	sudo docker build . -f buildscripts/infrastructure/build-nodes/centos-7/Dockerfile
 centos8-build:
